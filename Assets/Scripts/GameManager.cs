@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     private AudioSource audioSource;
     public TextMeshProUGUI bestScoreText;
     private int originalTimer;
+    public GameObject pauseUI;
+    public Button pauseButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -182,5 +184,24 @@ public class GameManager : MonoBehaviour
     public void GoToPlayerMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        pauseUI.SetActive(true);
+        pauseButton.gameObject.SetActive(false);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        pauseUI.SetActive(false);
+        pauseButton.gameObject.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
