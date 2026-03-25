@@ -1391,6 +1391,7 @@ MonoBehaviour:
   bestScoreText: {fileID: 663305214}
   pauseUI: {fileID: 968739062}
   pauseButton: {fileID: 364176924}
+  gameOverText: {fileID: 149687291}
 --- !u!4 &350716572
 Transform:
   m_ObjectHideFlags: 0
@@ -2545,7 +2546,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1616162940}
-  - {fileID: 953903262}
   - {fileID: 584515878}
   - {fileID: 827768607}
   - {fileID: 364176927}
@@ -2601,11 +2601,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 893840304}
+  m_Father: {fileID: 2000787049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -111, y: -84}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -83, y: 22}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &953903263
@@ -2706,7 +2706,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -24.613708, w: 0}
+  m_margin: {x: 0, y: 0, z: 23.365845, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5016,6 +5016,7 @@ RectTransform:
   - {fileID: 893840304}
   - {fileID: 2120032220}
   - {fileID: 712598679}
+  - {fileID: 953903262}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

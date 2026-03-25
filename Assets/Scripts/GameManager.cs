@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     private int originalTimer;
     public GameObject pauseUI;
     public Button pauseButton;
+    public TextMeshProUGUI gameOverText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -76,7 +77,8 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Congratulation: new best score");
+                    gameOverText.text = "New Best Score";
+                    gameOverText.color = Color.green;
                     bestScoreText.text = $"Best Score: {score} ({DataManager.Instance.currentPlayerName})";
                     bestScore.score = score;
                     bestScore.playerName = DataManager.Instance.currentPlayerName;
@@ -108,9 +110,9 @@ public class GameManager : MonoBehaviour
         timerGameObject.SetActive(false);
         timeUpText.GetComponent<BlinkingText>().StartBlinking();
         DeactiavatePooledBalls();
-        gameOverPanel.SetActive(true);
 
         UpdateBestScore();
+        gameOverPanel.SetActive(true);
         DataManager.Instance.SaveNewData();
     }
 
@@ -202,6 +204,7 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(1);
     }
 }
