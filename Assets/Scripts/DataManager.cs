@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -6,11 +7,11 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance;
     public string currentPlayerName;
     public int currentPlayerScore;
-    public string bestPlayerName;
-    public string bestScore;
+    public List<BestScore> bestScores;
 
     private void Awake()
     {
+        Debug.Log($"persistentDataPath: {Application.persistentDataPath}");
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -21,12 +22,19 @@ public class DataManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public class BestScore
+    {
+        public float time;
+        public string playerName;
+        public int score;
+    }
+
+    [System.Serializable]
     class SaveData
     {
         public string currentPlayerName;
         public int currentPlayerScore;
-        public string bestPlayerName;
-        public string bestScore;
+        public List<BestScore> bestScores;
     }
 
     public void SaveNewData()
@@ -34,8 +42,7 @@ public class DataManager : MonoBehaviour
         SaveData data = new SaveData();
         data.currentPlayerName = currentPlayerName;
         data.currentPlayerScore = currentPlayerScore;
-        data.bestPlayerName = bestPlayerName;
-        data.bestScore = bestScore;
+        data.bestScores = bestScores;
 
         string json = JsonUtility.ToJson(data);
 
@@ -50,8 +57,22 @@ public class DataManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(path));
             currentPlayerName = data.currentPlayerName;
             currentPlayerScore = data.currentPlayerScore;
-            bestPlayerName = data.bestPlayerName;
-            bestScore = data.bestScore;
+            bestScores = data.bestScores;
+
+            if(bestScores.Count == 0)
+            {
+                Debug.LogWarning("No best score available");
+            }
+            else
+            {
+                string bestScoreList = "";
+                foreach (BestScore bestScore in bestScores)
+                {
+                    bestScoreList += $"{bestScore.playerName}:{bestScore.score}; ";
+                }
+                Debug.Log("List of best scores:" + bestScoreList);
+
+            }
         }
     }
 }

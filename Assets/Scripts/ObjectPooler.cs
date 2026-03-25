@@ -21,15 +21,6 @@ public class ObjectPooler : MonoBehaviour
             obj.SetActive(true); // Set active to true to ensure colliders are registered with the Cloth component
             obj.transform.SetParent(transform);
             pooledObjects.Add(obj);
-
-            if(obj.GetComponent<SphereCollider>() == null)
-            {
-                Debug.LogWarning("Pooled object " + obj.name + " does not have a SphereCollider component.");
-            }
-            else
-            {
-                Debug.Log("Pooled object " + obj.name + " has a SphereCollider component.");
-            }
         }
     }
 

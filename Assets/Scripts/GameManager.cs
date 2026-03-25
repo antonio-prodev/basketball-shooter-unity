@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI timeUpText;
     public Slider powerIndicatorSlider;
     public Vector3 ballSpawnPosition = new Vector3(0, 2, 0);
-    public float[] zRange = {5, 12};
-    public float[] yRange = {1, 3};
+    public float[] zRange = { 5, 12 };
+    public float[] yRange = { 1, 3 };
     private int score;
     [SerializeField] private int timer = 60;
     public bool isGameActive;
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     [Header("Sound")]
     public AudioClip gameOverSound;
     private AudioSource audioSource;
+    public TextMeshProUGUI bestScoreText;
+    private int originalTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,17 +41,61 @@ public class GameManager : MonoBehaviour
         powerIndicatorSlider.minValue = 0;
         powerIndicatorSlider.maxValue = 1;
         powerIndicatorSlider.value = 0;
+
+        bestScoreText.text = "Best Score: 0";
     }
 
     public void StartGame(int duration)
     {
         timer = duration;
+        originalTimer = timer;
         isGameActive = true;
         welcomePanel.SetActive(false);
         gamePlayUI.SetActive(true);
         SpawnBall();
         StartCoroutine(CountdownTimer());
         LinkPooledBallsToPowerIndicator();
+
+        UpdateBestScore();
+    }
+
+    void UpdateBestScore()
+    {
+        if (DataManager.Instance.bestScores != null)
+        {
+            DataManager.BestScore bestScore = DataManager.Instance.bestScores.Find(bestScore => bestScore.time == originalTimer);
+            Debug.Log("Finding if there is a best score for timer == " + originalTimer);
+            if (bestScore != null)
+            {
+                if (score <= bestScore.score)
+                {
+                    Debug.Log("score <= bestScore.score");
+                    bestScoreText.text = $"Best Score: {bestScore.score} ({bestScore.playerName})";
+                }
+                else
+                {
+                    Debug.Log("Congratulation: new best score");
+                    bestScoreText.text = $"Best Score: {score} ({DataManager.Instance.currentPlayerName})";
+                    bestScore.score = score;
+                    bestScore.playerName = DataManager.Instance.currentPlayerName;
+                }
+            }
+            else
+            {
+                bestScore = new DataManager.BestScore
+                {
+                    time = originalTimer,
+                    score = score,
+                    playerName = DataManager.Instance.currentPlayerName
+                };
+
+                DataManager.Instance.bestScores.Add(bestScore);
+            }
+        }
+        else
+        {
+            Debug.LogError("DataManager.Instance.bestScores is null");
+        }
     }
 
     public void EndGame()
@@ -61,6 +107,9 @@ public class GameManager : MonoBehaviour
         timeUpText.GetComponent<BlinkingText>().StartBlinking();
         DeactiavatePooledBalls();
         gameOverPanel.SetActive(true);
+
+        UpdateBestScore();
+        DataManager.Instance.SaveNewData();
     }
 
     Vector3 GenerateRandomSpawnPos()
@@ -97,14 +146,8 @@ public class GameManager : MonoBehaviour
         {
             pooledObject.transform.position = ballSpawnPosition;
             pooledObject.transform.rotation = Quaternion.identity;
-            Debug.Log("Activating pooled ball..." + pooledObject.name);
             pooledObject.SetActive(true);
             pooledObject.GetComponent<SphereCollider>().isTrigger = true; // Set to trigger so the ball ignores collision while in kinimatic state
-        }
-        else
-        {
-            Debug.LogWarning("No pooled ball available!");
-            //Instantiate(ballPrefab, ballSpawnPosition, Quaternion.identity);
         }
 
         ballSpawnPosition = GenerateRandomSpawnPos(); // Generate a new random spawn position for the next spawn
@@ -112,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     void LinkPooledBallsToPowerIndicator()
     {
-        foreach(GameObject ball in ObjectPooler.SharedInstance.pooledObjects)
+        foreach (GameObject ball in ObjectPooler.SharedInstance.pooledObjects)
         {
             ball.GetComponent<BallController>().LinkBallToPowerIndicator();
         }
@@ -120,7 +163,7 @@ public class GameManager : MonoBehaviour
 
     void DeactiavatePooledBalls()
     {
-        foreach(GameObject ball in ObjectPooler.SharedInstance.pooledObjects)
+        foreach (GameObject ball in ObjectPooler.SharedInstance.pooledObjects)
         {
             if (ball.activeInHierarchy)
             {

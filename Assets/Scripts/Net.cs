@@ -20,7 +20,6 @@ public class Net : MonoBehaviour
         for (int i = 0; i < list.Count; i++)
         {
             var col = list[i].GetComponent<SphereCollider>();
-            Debug.Log("Ball " + list[i].name + " collider: " + (col != null) + " active:" + (col?.gameObject.activeInHierarchy));
         
             var pair = new ClothSphereColliderPair();
             pair.first = col;

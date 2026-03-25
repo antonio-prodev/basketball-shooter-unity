@@ -7,7 +7,7 @@ public class WelcomeUIHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (descriptionText != null)
+        if (descriptionText != null && DataManager.Instance != null)
         {
             descriptionText.text = descriptionText.text.Replace(":name", DataManager.Instance.currentPlayerName);
         }

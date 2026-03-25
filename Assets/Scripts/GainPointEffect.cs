@@ -34,8 +34,6 @@ public class GainPointEffect : MonoBehaviour
 
         StartCoroutine(FadeOutEffectRoutine());
         StartCoroutine(RiseEffectRoutine());
-
-        Debug.Log("Playing Point Gain Effect");
     }
 
     IEnumerator FadeOutEffectRoutine()
