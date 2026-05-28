@@ -14,7 +14,7 @@ A new ball spawns after each shot using object pooling.
 - 3D environment with score and timer system
 
 ## Play it
-[[play.unity.com link here]](https://play.unity.com/en/games/2ace4802-1bdc-4cf5-b401-ba3b72152ad9/basket-blitz)
+https://play.unity.com/en/games/2ace4802-1bdc-4cf5-b401-ba3b72152ad9/basket-blitz
 
 ## Built with
 Unity · C# · 3D Physics
